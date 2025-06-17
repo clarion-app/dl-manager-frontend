@@ -1,0 +1,50 @@
+{
+  "name": "@clarion-app/download-manager-frontend",
+  "version": "1.0.0",
+  "description": "Describe your package",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rm -rf dist && tsc"
+  },
+  "author": "Tim Schwartz <tim@metaverse.systems>",
+  "license": "MIT",
+  "dependencies": {
+    "@clarion-app/types": "^1.0.3",
+    "@reduxjs/toolkit": "^1.9.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.4.1",
+    "typescript": "^4.8.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6"
+  },
+  "customFields": {
+    "clarion": {
+      "api": [
+        "downloadManagerApi"
+      ],
+      "routes": [
+        {
+          "path": "/clarion-app/download-manager/messages",
+          "element": "<Messages />"
+        },
+        {
+          "path": "/clarion-app/download-manager/messages/:id",
+          "element": "<Message />"
+        }
+      ],
+      "menu": {
+        "name": "Download Manager Application",
+        "entries": [
+          {
+            "name": "Messages",
+            "path": "/clarion-app/download-manager/messages"
+          }
+        ]
+      }
+    }
+  }
+}
