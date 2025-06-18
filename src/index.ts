@@ -1,7 +1,7 @@
 import { BackendType } from "@clarion-app/types";
-import { downloadsApi } from "./downloadManagerApi";
-import { Message } from "./Message";
-import { Messages } from "./Messages";
+import { downloadManagerApi } from "./downloadManagerApi";
+import { TorrentServer } from "./TorrentServer";
+import { TorrentServers } from "./TorrentServers";
 
 export const backend: BackendType = { url: "http://localhost:8000", token: "", user: { id: "", name: "", email: ""} };
 
@@ -12,7 +12,7 @@ export const updateFrontend = (config: BackendType) => {
 };
 
 export {
-    downloadsApi,
-    Message,
-    Messages,
+    downloadManagerApi,
+    TorrentServer,
+    TorrentServers,
 };

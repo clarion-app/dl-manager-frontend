@@ -28,20 +28,16 @@
       ],
       "routes": [
         {
-          "path": "/clarion-app/download-manager/messages",
-          "element": "<Messages />"
-        },
-        {
-          "path": "/clarion-app/download-manager/messages/:id",
-          "element": "<Message />"
+          "path": "/clarion-app/download-manager/torrent-servers",
+          "element": "<TorrentServers />"
         }
       ],
       "menu": {
-        "name": "Download Manager Application",
+        "name": "Download Manager",
         "entries": [
           {
-            "name": "Messages",
-            "path": "/clarion-app/download-manager/messages"
+            "name": "Torrent Servers",
+            "path": "/clarion-app/download-manager/torrent-servers"
           }
         ]
       }

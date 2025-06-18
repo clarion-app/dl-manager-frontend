@@ -1,53 +1,14 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseQuery from './baseQuery';
-import { LaravelModelType } from '@clarion-app/types';
 import { TorrentServer } from './types';
 
-export interface MessageType extends LaravelModelType {
-  to: string;
-  from: string;
-  message: string;
-}
-
-export const downloadsApi = createApi({
+export const downloadManagerApi = createApi({
   reducerPath: 'clarion-app-downloads-api',
   baseQuery: baseQuery(),
-  tagTypes: ['Message', 'TorrentServer'],
+  tagTypes: ['TorrentServer'],
   endpoints: (builder) => ({
-    getMessages: builder.query<MessageType[], void>({
-      query: () => '/messages',
-      providesTags: ['Message'],
-    }),
-    getMessage: builder.query<MessageType, string>({
-      query: (id) => `/messages/${id}`,
-      providesTags: ['Message'],
-    }),
-    createMessage: builder.mutation<MessageType, Partial<MessageType>>({
-      query: (message) => ({
-        url: '/messages',
-        method: 'POST',
-        body: message,
-      }),
-      invalidatesTags: ['Message'],
-    }),
-    updateMessage: builder.mutation<MessageType, { id: string; message: Partial<MessageType> }>({
-      query: ({ id, message }) => ({
-        url: `/messages/${id}`,
-        method: 'PUT',
-        body: message,
-      }),
-      invalidatesTags: ['Message'],
-    }),
-    deleteMessage: builder.mutation<void, string>({
-      query: (id) => ({
-        url: `/messages/${id}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: ['Message'],
-    }),
-    
     // TorrentServer endpoints
-    getTorrentServers: builder.query<{ servers: TorrentServer[], clientTypes: string[] }, void>({
+    getTorrentServers: builder.query<TorrentServer[], void>({
       query: () => '/torrent-servers',
       providesTags: ['TorrentServer'],
     }),
@@ -78,7 +39,7 @@ export const downloadsApi = createApi({
       }),
       invalidatesTags: ['TorrentServer'],
     }),
-    getClientTypes: builder.query<string[], void>({
+    getTorrentClientTypes: builder.query<string[], void>({
       query: () => '/torrent-servers/client-types',
     }),
   }),
@@ -86,15 +47,10 @@ export const downloadsApi = createApi({
 
 // Extract hooks
 export const {
-  useGetMessagesQuery,
-  useGetMessageQuery,
-  useCreateMessageMutation,
-  useUpdateMessageMutation,
-  useDeleteMessageMutation,
   useGetTorrentServersQuery,
   useGetTorrentServerQuery,
   useCreateTorrentServerMutation,
   useUpdateTorrentServerMutation,
   useDeleteTorrentServerMutation,
-  useGetClientTypesQuery,
-} = downloadsApi;
+  useGetTorrentClientTypesQuery,
+} = downloadManagerApi;
