@@ -121,7 +121,7 @@ export const Torrents = () => {
                     <option value="">Select a server</option>
                     {servers.map((server) => (
                       <option key={server.id} value={server.id}>
-                        {server.local_node} - {server.address}
+                        {server.address}
                       </option>
                     ))}
                   </select>
@@ -154,34 +154,6 @@ export const Torrents = () => {
                   placeholder="magnet:?xt=urn:btih:..."
                   required
                   rows={3}
-                />
-              </div>
-            </div>
-            <div className="field">
-              <label className="label" htmlFor="create-hash">Hash String:</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="text"
-                  id="create-hash"
-                  value={createForm.hash_string}
-                  onChange={(e) => handleCreateFormChange('hash_string', e.target.value)}
-                  disabled={isCreating}
-                  placeholder="Enter hash string (optional)"
-                />
-              </div>
-            </div>
-            <div className="field">
-              <label className="label" htmlFor="create-user">User ID:</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="text"
-                  id="create-user"
-                  value={createForm.user_id}
-                  onChange={(e) => handleCreateFormChange('user_id', e.target.value)}
-                  disabled={isCreating}
-                  placeholder="Enter user ID (optional)"
                 />
               </div>
             </div>

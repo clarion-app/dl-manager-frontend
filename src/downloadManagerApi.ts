@@ -75,6 +75,13 @@ export const downloadManagerApi = createApi({
       }),
       invalidatesTags: ['Torrent'],
     }),
+    markTorrentIncomplete: builder.mutation<Torrent, string>({
+      query: (id) => ({
+        url: `/torrents/${id}/mark-incomplete`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: ['Torrent'],
+    }),
   }),
 });
 
@@ -91,4 +98,5 @@ export const {
   useCreateTorrentMutation,
   useUpdateTorrentMutation,
   useDeleteTorrentMutation,
+  useMarkTorrentIncompleteMutation,
 } = downloadManagerApi;

@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
 import { Torrent as TorrentType } from './types';
-import { useUpdateTorrentMutation, useDeleteTorrentMutation, useGetTorrentServersQuery } from './downloadManagerApi';
+import { useUpdateTorrentMutation, useDeleteTorrentMutation, useGetTorrentServersQuery, useMarkTorrentIncompleteMutation } from './downloadManagerApi';
 
 interface TorrentProps {
   torrent: TorrentType;
   onDeleted?: () => void;
 }
+
+const createDateFromTimestamp = (
+  timestamp: string | number,
+  timezone?: string | number
+): Date => {
+  const timestampNum = typeof timestamp === 'string' ? parseInt(timestamp) : timestamp;
+  
+  // Convert to milliseconds
+  const utcTime = timestampNum * 1000;
+  
+  return new Date(utcTime);
+};
 
 export const Torrent: React.FC<TorrentProps> = ({ torrent, onDeleted }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -18,6 +30,7 @@ export const Torrent: React.FC<TorrentProps> = ({ torrent, onDeleted }) => {
 
   const [updateTorrent, { isLoading: isUpdating }] = useUpdateTorrentMutation();
   const [deleteTorrent, { isLoading: isDeleting }] = useDeleteTorrentMutation();
+  const [markIncomplete, { isLoading: isMarkingIncomplete }] = useMarkTorrentIncompleteMutation();
   const { data: servers = [] } = useGetTorrentServersQuery();
 
   const handleEdit = () => {
@@ -57,6 +70,18 @@ export const Torrent: React.FC<TorrentProps> = ({ torrent, onDeleted }) => {
         onDeleted?.();
       } catch (error) {
         console.error('Failed to delete torrent:', error);
+      }
+    }
+  };
+
+  const handleMarkIncomplete = async () => {
+    if (!torrent.id) return;
+    
+    if (window.confirm('Are you sure you want to mark this torrent as incomplete?')) {
+      try {
+        await markIncomplete(torrent.id.toString()).unwrap();
+      } catch (error) {
+        console.error('Failed to mark torrent as incomplete:', error);
       }
     }
   };
@@ -103,7 +128,7 @@ export const Torrent: React.FC<TorrentProps> = ({ torrent, onDeleted }) => {
                       >
                         {servers.map((server) => (
                           <option key={server.id} value={server.id}>
-                            {server.local_node} - {server.address}
+                            {server.address}
                           </option>
                         ))}
                       </select>
@@ -200,6 +225,12 @@ export const Torrent: React.FC<TorrentProps> = ({ torrent, onDeleted }) => {
     );
   }
 
+  console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
+  console.log(new Date(torrent.created_at!).toLocaleString('en-US', { 
+                timeZone: 'UTC'
+           }));
+  console.log(new Date(torrent.created_at!).toLocaleString());
+
   return (
     <tr>
       <td>
@@ -235,21 +266,38 @@ export const Torrent: React.FC<TorrentProps> = ({ torrent, onDeleted }) => {
       </td>
       <td>
         {torrent.created_at && (
-          <span className="tag is-light">{new Date(torrent.created_at).toLocaleString()}</span>
+          <span className="tag is-light">
+            {new Date(torrent.created_at).toLocaleString('en-US', { 
+                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+           })}</span>
         )}
       </td>
       <td>
-        <div className="buttons are-small">
-          <button onClick={handleEdit} className="button is-small is-info">
+        <div className="buttons are-small" style={{ display: 'flex', gap: '0.25rem' }}>
+          <button onClick={handleEdit} className="button is-small is-info" style={{ flex: '1', minWidth: '120px' }}>
             <span className="icon is-small">
               <i className="fas fa-edit"></i>
             </span>
             <span>Edit</span>
           </button>
+          {torrent.completed_at && (
+            <button 
+              onClick={handleMarkIncomplete} 
+              disabled={isMarkingIncomplete}
+              className={`button is-small is-warning ${isMarkingIncomplete ? 'is-loading' : ''}`}
+              style={{ flex: '1', minWidth: '120px' }}
+            >
+              <span className="icon is-small">
+                <i className="fas fa-undo"></i>
+              </span>
+              <span>Mark Incomplete</span>
+            </button>
+          )}
           <button 
             onClick={handleDelete} 
             disabled={isDeleting}
             className={`button is-small is-danger ${isDeleting ? 'is-loading' : ''}`}
+            style={{ flex: '1', minWidth: '120px' }}
           >
             <span className="icon is-small">
               <i className="fas fa-trash"></i>
