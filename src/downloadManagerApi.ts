@@ -1,11 +1,11 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseQuery from './baseQuery';
-import { TorrentServer } from './types';
+import { TorrentServer, Torrent } from './types';
 
 export const downloadManagerApi = createApi({
   reducerPath: 'clarion-app-downloads-api',
   baseQuery: baseQuery(),
-  tagTypes: ['TorrentServer'],
+  tagTypes: ['TorrentServer', 'Torrent'],
   endpoints: (builder) => ({
     // TorrentServer endpoints
     getTorrentServers: builder.query<TorrentServer[], void>({
@@ -42,6 +42,39 @@ export const downloadManagerApi = createApi({
     getTorrentClientTypes: builder.query<string[], void>({
       query: () => '/torrent-servers/client-types',
     }),
+    
+    // Torrent endpoints
+    getTorrents: builder.query<Torrent[], void>({
+      query: () => '/torrents',
+      providesTags: ['Torrent'],
+    }),
+    getTorrent: builder.query<Torrent, string>({
+      query: (id) => `/torrents/${id}`,
+      providesTags: ['Torrent'],
+    }),
+    createTorrent: builder.mutation<Torrent, Partial<Torrent>>({
+      query: (torrent) => ({
+        url: '/torrents',
+        method: 'POST',
+        body: torrent,
+      }),
+      invalidatesTags: ['Torrent'],
+    }),
+    updateTorrent: builder.mutation<Torrent, { id: string; torrent: Partial<Torrent> }>({
+      query: ({ id, torrent }) => ({
+        url: `/torrents/${id}`,
+        method: 'PUT',
+        body: torrent,
+      }),
+      invalidatesTags: ['Torrent'],
+    }),
+    deleteTorrent: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/torrents/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Torrent'],
+    }),
   }),
 });
 
@@ -53,4 +86,9 @@ export const {
   useUpdateTorrentServerMutation,
   useDeleteTorrentServerMutation,
   useGetTorrentClientTypesQuery,
+  useGetTorrentsQuery,
+  useGetTorrentQuery,
+  useCreateTorrentMutation,
+  useUpdateTorrentMutation,
+  useDeleteTorrentMutation,
 } = downloadManagerApi;

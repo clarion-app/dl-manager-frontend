@@ -30,6 +30,10 @@
         {
           "path": "/clarion-app/download-manager/torrent-servers",
           "element": "<TorrentServers />"
+        },
+        {
+          "path": "/clarion-app/download-manager/torrents",
+          "element": "<Torrents />"
         }
       ],
       "menu": {
@@ -38,8 +42,13 @@
           {
             "name": "Torrent Servers",
             "path": "/clarion-app/download-manager/torrent-servers"
+          },
+          {
+            "name": "Torrents",
+            "path": "/clarion-app/download-manager/torrents"
           }
-        ]
+        ],
+        "pinnedEntries": ["Torrents"]
       }
     }
   }

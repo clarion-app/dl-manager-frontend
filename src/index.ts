@@ -2,6 +2,8 @@ import { BackendType } from "@clarion-app/types";
 import { downloadManagerApi } from "./downloadManagerApi";
 import { TorrentServer } from "./TorrentServer";
 import { TorrentServers } from "./TorrentServers";
+import { Torrent } from "./Torrent";
+import { Torrents } from "./Torrents";
 
 export const backend: BackendType = { url: "http://localhost:8000", token: "", user: { id: "", name: "", email: ""} };
 
@@ -15,4 +17,6 @@ export {
     downloadManagerApi,
     TorrentServer,
     TorrentServers,
+    Torrent,
+    Torrents,
 };
