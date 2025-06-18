@@ -9,6 +9,7 @@ export const Torrents = () => {
   const [createTorrent, { isLoading: isCreating }] = useCreateTorrentMutation();
   
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const [createForm, setCreateForm] = useState({
     server_id: '',
     user_id: '',
@@ -71,6 +72,11 @@ export const Torrents = () => {
     refetch();
   };
 
+  // Filter torrents based on search term
+  const filteredTorrents = torrents?.filter((torrent: TorrentType) =>
+    torrent.name?.toLowerCase().includes(searchTerm.toLowerCase())
+  ) || [];
+
   if (isLoading) {
     return <div className="notification is-info">Loading torrents...</div>;
   }
@@ -100,6 +106,22 @@ export const Torrents = () => {
               <span>Add New Torrent</span>
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className="field">
+        <div className="control has-icons-left">
+          <input
+            className="input"
+            type="text"
+            placeholder="Search torrents by name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <span className="icon is-small is-left">
+            <i className="fas fa-search"></i>
+          </span>
         </div>
       </div>
 
@@ -188,6 +210,11 @@ export const Torrents = () => {
             <p><strong>No torrents found.</strong></p>
             <p>Click "Add New Torrent" to create your first torrent.</p>
           </div>
+        ) : filteredTorrents.length === 0 ? (
+          <div className="notification is-info">
+            <p><strong>No torrents match your search.</strong></p>
+            <p>Try adjusting your search term or <button className="button is-small is-text" onClick={() => setSearchTerm('')}>clear the search</button>.</p>
+          </div>
         ) : (
           <div className="table-container">
             <table className="table is-fullwidth is-striped is-hoverable">
@@ -202,7 +229,7 @@ export const Torrents = () => {
                 </tr>
               </thead>
               <tbody>
-                {torrents.map((torrent: TorrentType) => (
+                {filteredTorrents.map((torrent: TorrentType) => (
                   <Torrent 
                     key={torrent.id}
                     torrent={torrent} 
@@ -226,14 +253,20 @@ export const Torrents = () => {
           </div>
           <div className="level-item has-text-centered">
             <div>
+              <p className="heading">Showing</p>
+              <p className="title">{filteredTorrents.length}</p>
+            </div>
+          </div>
+          <div className="level-item has-text-centered">
+            <div>
               <p className="heading">Completed</p>
-              <p className="title">{torrents?.filter(t => t.completed_at).length || 0}</p>
+              <p className="title">{filteredTorrents.filter(t => t.completed_at).length}</p>
             </div>
           </div>
           <div className="level-item has-text-centered">
             <div>
               <p className="heading">In Progress</p>
-              <p className="title">{torrents?.filter(t => !t.completed_at).length || 0}</p>
+              <p className="title">{filteredTorrents.filter(t => !t.completed_at).length}</p>
             </div>
           </div>
           <div className="level-item has-text-centered">
