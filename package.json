@@ -1,5 +1,5 @@
 {
-  "name": "@clarion-app/download-manager-frontend",
+  "name": "@clarion-app/dl-manager-frontend",
   "version": "1.0.0",
   "description": "Frontend for managing downloads in Clarion",
   "main": "dist/index.js",
