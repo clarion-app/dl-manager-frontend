@@ -1,7 +1,7 @@
 {
   "name": "@clarion-app/download-manager-frontend",
   "version": "1.0.0",
-  "description": "Describe your package",
+  "description": "Frontend for managing downloads in Clarion",
   "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist && tsc"
