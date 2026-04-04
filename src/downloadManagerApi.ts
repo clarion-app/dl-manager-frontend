@@ -1,10 +1,11 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQuery from './baseQuery';
+import { createBaseQuery } from '@clarion-app/frontend-base';
+import { backend } from './config';
 import { TorrentServer, Torrent } from './types';
 
 export const downloadManagerApi = createApi({
   reducerPath: 'clarion-app-downloads-api',
-  baseQuery: baseQuery(),
+  baseQuery: createBaseQuery({ routePrefix: '/api/clarion-app/download-manager', backendConfig: backend }),
   tagTypes: ['TorrentServer', 'Torrent'],
   endpoints: (builder) => ({
     // TorrentServer endpoints

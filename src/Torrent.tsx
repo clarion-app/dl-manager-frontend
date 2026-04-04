@@ -225,12 +225,6 @@ export const Torrent: React.FC<TorrentProps> = ({ torrent, onDeleted }) => {
     );
   }
 
-  console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
-  console.log(new Date(torrent.created_at!).toLocaleString('en-US', { 
-                timeZone: 'UTC'
-           }));
-  console.log(new Date(torrent.created_at!).toLocaleString());
-
   return (
     <tr>
       <td>
