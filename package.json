@@ -4,7 +4,9 @@
   "description": "Frontend for managing downloads in Clarion",
   "main": "dist/index.js",
   "scripts": {
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "author": "Tim Schwartz <tim@metaverse.systems>",
   "license": "MIT",
@@ -19,8 +21,12 @@
     "typescript": "^4.8.4"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^14.3.1",
     "@types/react": "^18.0.21",
-    "@types/react-dom": "^18.0.6"
+    "@types/react-dom": "^18.0.6",
+    "jsdom": "^29.0.1",
+    "vitest": "^4.1.2"
   },
   "customFields": {
     "clarion": {
@@ -49,7 +55,9 @@
             "path": "/clarion-app/download-manager/torrents"
           }
         ],
-        "pinnedEntries": ["Torrents"]
+        "pinnedEntries": [
+          "Torrents"
+        ]
       }
     }
   }

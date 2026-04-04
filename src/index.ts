@@ -3,6 +3,7 @@ import { TorrentServer } from "./TorrentServer";
 import { TorrentServers } from "./TorrentServers";
 import { Torrent } from "./Torrent";
 import { Torrents } from "./Torrents";
+import { useTorrentNotifications } from "./useTorrentNotifications";
 
 export { backend, updateFrontend } from './config';
 
@@ -12,4 +13,5 @@ export {
     TorrentServers,
     Torrent,
     Torrents,
+    useTorrentNotifications,
 };
