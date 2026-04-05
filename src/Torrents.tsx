@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { useGetTorrentsQuery, useCreateTorrentMutation, useGetTorrentServersQuery } from './downloadManagerApi';
 import { Torrent } from './Torrent';
 import { Torrent as TorrentType } from './types';
-import { useTorrentNotifications } from './useTorrentNotifications';
 
 export const Torrents = () => {
-  useTorrentNotifications();
   const { data: torrents, isLoading, error, refetch } = useGetTorrentsQuery();
   const { data: servers = [] } = useGetTorrentServersQuery();
   const [createTorrent, { isLoading: isCreating }] = useCreateTorrentMutation();
